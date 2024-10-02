@@ -1,0 +1,12 @@
+---
+title: "Oct 2, 2024"
+author: "Andrew Bazuro"
+format: html
+editor: visual
+---
+```{r}
+rm(list = ls())
+library(here)
+library(tidyverse)
+```
+
