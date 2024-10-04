@@ -1,0 +1,86 @@
+---
+title: "Oct-4-2024"
+author: "Andrew Bazuro"
+format: html
+editor: visual
+---
+
+Set up
+
+```{r}
+rm(list = ls())
+library(here)
+library(tidyverse)
+```
+
+Read in .csv file
+
+```{r}
+drug_resistance <- read.csv(here("data", "drug_resistance.csv"))
+```
+
+First step is to see data and find any errors using `str()` or `glimpse()`
+
+```{r}
+str(drug_resistance)
+drug_resistance$Treatment <- as.factor(drug_resistance$Treatment)
+str(drug_resistance)
+#use levels() to examine the different factor levels
+levels(drug_resistance$Treatment)
+##There are 9 levels when their should be 3.
+```
+
+Now we need to fix the treatment variable `which()` (returns row numbers) and `%in%`
+
+```{r}
+#find the rwos that have any version of control
+drug_resistance$Treatment[4]
+fix <- which(drug_resistance$Treatment %in% c("cantrol", "control", "Control"))
+
+
+drug_resistance$Treatment[fix] <- "control" #reassign the rows
+drug_resistance$Treatment <- factor(drug_resistance$Treatment)
+levels(drug_resistance$Treatment)
+```
+change second factor level
+```{r}
+fix2 <- which(drug_resistance$Treatment %in% c("drug x 2", "drug2", "Drugx2"))
+drug_resistance$Treatment[fix2] <- "drug x 2"
+drug_resistance$Treatment <- factor(drug_resistance$Treatment)
+levels(drug_resistance$Treatment)
+```
+
+change third factor level
+```{r}
+fix3 <- which(drug_resistance$Treatment %in% c("drug x 3", "drug3", "Drug x 3"))
+drug_resistance$Treatment[fix3] <- "drug x 3"
+drug_resistance$Treatment <- factor(drug_resistance$Treatment)
+levels(drug_resistance$Treatment)
+```
+
+```{r}
+drug_resistance$tech.name <- as.factor(drug_resistance$tech.name)
+
+levels(drug_resistance$tech.name)
+
+fix4 <- which(drug_resistance$tech.name %in% c("becca", "Becca"))
+drug_resistance$tech.name[fix4] <- "becca" #reassign the rows
+drug_resistance$tech.name <- factor(drug_resistance$tech.name)
+levels(drug_resistance$tech.name)
+```
+```{r}
+fix5 <- which(drug_resistance$tech.name %in% c("brian", "brain", "Brian"))
+drug_resistance$tech.name[fix5] <- "brian" #reassign the rows
+drug_resistance$tech.name <- factor(drug_resistance$tech.name)
+levels(drug_resistance$tech.name)
+```
+
+```{r}
+##code doesn't like trying to name it a name thats not already a level.
+##This chunk wasn't running
+fix6 <- which(drug_resistance$tech.name %in% c("Mary", "mary"))
+drug_resistance$tech.name[fix6] <- "mary" #reassign the rows
+drug_resistance$tech.name <- factor(drug_resistance$tech.name)
+levels(drug_resistance$tech.name)
+```
+
