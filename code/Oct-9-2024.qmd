@@ -18,9 +18,16 @@ Write a line that returns the 3rd, 7th, and 9th rows of data.
 tomatoslim <- tomato |> slice(3, 7, 9)
 ```
 
-Write a line of code that finds all of the plants fromt he frtilizer treatment with avg_tomato_weight_g > or equal to 145 g
+Write a line of code that finds all of the plants from the fertilizer treatment with avg_tomato_weight_g > or equal to 145 g
 
 ```{r}
-tomatosum <- tomato |> filter(Avg_tomato_weight_g >= 145)
+tomatosum <- tomato |> filter(Treatment == "Fertilizer") |> filter(Avg_tomato_weight_g >= 145)
+```
+
+```{r}
+dir.create(here("Outputs"))
+
+write.csv(tomato, here("Outputs", "tomatoes_fixed.csv"), row.names = FALSE) ##removes X1 row from dataset
+toms2 <- read.csv(here("Outputs", "tomatoes_fixed.csv"))
 ```
 
