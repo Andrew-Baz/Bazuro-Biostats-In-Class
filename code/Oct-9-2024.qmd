@@ -31,3 +31,26 @@ write.csv(tomato, here("Outputs", "tomatoes_fixed.csv"), row.names = FALSE) ##re
 toms2 <- read.csv(here("Outputs", "tomatoes_fixed.csv"))
 ```
 
+```{r}
+rm(list = ls())
+lead <- read.csv(here("data", "NoCoLead.csv"))
+summary(lead)
+lead |> summarize(
+  mean_num_tests = mean(num_tests)
+) |> View()
+```
+
+What is the mean number of tests per year?
+
+```{r}
+lead |> 
+  group_by(Year) |> 
+  summarize(
+    mean_tests_per_year = mean(num_tests)) |>
+  View()
+```
+
+```{r}
+
+```
+
