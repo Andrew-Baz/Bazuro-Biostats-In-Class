@@ -1,0 +1,59 @@
+---
+title: "Nov-04-2024"
+author: "Andrew Bazuro"
+format: html
+editor: visual
+---
+
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(here)
+library(ggfortify)
+library(multcomp)
+Forest <- read.csv(here("data", "Forest_Tree_DBH_F21.csv"))
+```
+
+Part 1, is there a difference in mean tree DBH between forests.
+Part 2, if there is a difference, for which forests does the difference exist?
+```{r}
+Forest$Forest <- as.factor(Forest$Forest)
+```
+
+```{r}
+ggplot(Forest, aes(x = Forest, y = DBH_cm)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.1) +
+  theme_bw()
+```
+
+Median for each is as follows: around 34 for Degrasse, 15 for Donnerville, 20 for Kip tract, 15 for Peavine Swamp, and around 14 for South Hammond. The highest point was around 105 and every barplot except for Degrasse had several outliers.
+
+```{r}
+model_Forest <- lm(DBH_cm ~ Forest, data = Forest)
+```
+
+```{r}
+autoplot(model_Forest, smooth.colour = NA)
+```
+
+```{r}
+anova(model_Forest)
+```
+Interpretation: We reject the null hypothesis as p < 0.05.
+
+```{r}
+summary(model_Forest)
+```
+Degrasse is the intercept point here (hidden because it's the first alphabetically)
+
+Let's conduct a Tukey's HSD (honestly significant differences) test.
+```{r}
+phc1 <- glht(model_Forest, linfct = mcp(Forest = "Tukey"))
+summary(phc1)
+```
+We can also ask for a "compact letter display of these results where having a different letter shows a significant difference. (so below Degrasse and South Hammond have a significant difference in mean DBH_cm)
+```{r}
+cld(phc1)
+```
+
